@@ -1,9 +1,11 @@
 #loading flask libraries
 import flask
 import hashlib
+import math
 
 from flask import jsonify
 from flask import request, make_response
+from functools import wraps
 
 import sql
 from sql import create_connection
@@ -17,14 +19,14 @@ import creds
 app = flask.Flask(__name__)
 app.config["DEBUG"]=True #to show errors in browser
 
-masterPassword = "c9f60108ce2cf9d828075088235383616d7586cbe9ee31a7032218ed434240ee"  # Hash value of Password 'password' 
+masterPassword = "c9f60108ce2cf9d828075088235383616d7586cbe9ee31a7032218ed434240ee"  # Hash value of Password 'CIS3368Project' 
 masterUsername = 'username'
 
 # basic http authentication, prompts username and password upon contacting the endpoint
 
 # 'password' as plaintext should not be used to verify authorization to access. 
 # the password should be hashed and the hash should be compared to the stored password hash in the database
-@app.route('/authenticatedroute', methods=['GET'])
+"""@app.route('/authenticatedroute', methods=['GET'])
 def auth_test():
     if request.authorization:
         encoded = request.authorization.password.encode() #unicode encoding
@@ -32,9 +34,23 @@ def auth_test():
         if request.authorization.username == masterUsername and hasedResult.hexdigest() == masterPassword:
             return '<h1> Authorized user access </h1>'
     return make_response('Could not verify', 401, {'WWW-Authenticate' : 'Basic realm="Login Required"'})
+"""
+def basic_authentication(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        auth = request.authorization
+        if not auth or not check_auth(auth.username, auth.password):
+            return make_response('Could not verify', 401, {'WWW-Authenticate' : 'Basic realm="Login Required"'})
+        return f(*args, **kwargs)
+    return decorated
+def check_auth(username, password):
+    encoded = password.encode()
+    hashedResult = hashlib.sha256(encoded).hexdigest()
+    return username == masterUsername and hashedResult == masterPassword
 
 #create an endpoint to run default home page request
 @app.route('/', methods=['GET'])
+@basic_authentication
 def home():
     return "<h1> Welcome </h1>"
 
@@ -58,7 +74,7 @@ def api_facility_by_id():
     return jsonify(results)
 
 #get all facilities
-@app.route('/api/faciliy/all', methods=['GET'])
+@app.route('/api/facility/all', methods=['GET'])
 def all_facility_info():
     mycreds = creds.creds()
     myconn = create_connection(mycreds.myhostname, mycreds.uname, mycreds.passwd, mycreds.dbname)
@@ -167,14 +183,14 @@ def api_update_classroom_byID():
     return "Update request successful!"
 
 #delete at id#
-@app.route('/api/plants', methods=['DELETE'])
+@app.route('/api/classroom', methods=['DELETE'])
 def api_delete_plant_byID():
     request_data = request.get_json()
     idtoupdate = request_data['id']
     
     mycreds = creds.creds()
     myconn = create_connection(mycreds.myhostname, mycreds.uname, mycreds.passwd, mycreds.dbname)
-    sql = "DELETE FROM plants where id = '%s'" % (idtoupdate)
+    sql = "DELETE FROM classroom where id = '%s'" % (idtoupdate)
 
     execute_update_query(myconn, sql)
         
@@ -205,8 +221,8 @@ def all_teachers_info():
     mycreds = creds.creds()
     myconn = create_connection(mycreds.myhostname, mycreds.uname, mycreds.passwd, mycreds.dbname)
     mysqlst = "select * from teacher"
-    plantslist = execute_read_query(myconn, mysqlst)
-    return jsonify(plantslist)
+    teacherlist = execute_read_query(myconn, mysqlst)
+    return jsonify(teacherlist)
 
 #add a teacher
 @app.route('/api/teacher', methods=['POST'])
@@ -255,7 +271,149 @@ def api_delete_teacher_byID():
     return "Delete request successful!"
 
 #//////////////////////////////////////////CHILD////////////////////////////////////////////////////
+#get one child
+@app.route('/api/child', methods=['GET'])
+def api_child_by_id():
+   
+    if 'id' in request.args:
+        id = int(request.args['id'])
+    else:
+        return 'Error: No ID is provided!'
+    mycreds = creds.creds()
+    myconn = create_connection(mycreds.myhostname, mycreds.uname, mycreds.passwd, mycreds.dbname)
+    mysqlst = "select * from child"
+    childlist = execute_read_query(myconn, mysqlst)
+    results = []
+    for child in childlist:
+        if child['id']== id:
+            results.append(child)
+    return jsonify(results)
 
+#get all children
+@app.route('/api/child/all', methods=['GET'])
+def all_child_info():
+    mycreds = creds.creds()
+    myconn = create_connection(mycreds.myhostname, mycreds.uname, mycreds.passwd, mycreds.dbname)
+    mysqlst = "select * from child"
+    childlist = execute_read_query(myconn, mysqlst)
+    return jsonify(childlist)
+
+#add a child
+@app.route('/api/child', methods=['POST'])
+def api_add_child():
+    request_data = request.get_json()
+    newfname = request_data['firstname']
+    newlname = request_data['lastname']
+    newage = request_data['age']
+    newroom = request_data['room']
+
+    #count all childs in a room
+    mycreds = creds.creds()
+    myconn = create_connection(mycreds.myhostname, mycreds.uname, mycreds.passwd, mycreds.dbname)
+    mysqlst = "select * from child"
+    childlist = execute_read_query(myconn, mysqlst)
+    childclasscount = 0
+    for child in childlist:
+        if child['room']== newroom:
+            childclasscount = childclasscount + 1
+    #return str(childclasscount)
+
+    #count all teachers to a room
+    mysqlst = "select * from teacher"
+    teacherlist = execute_read_query(myconn, mysqlst)
+    teacherclasscount = 0
+    for teacher in teacherlist:
+        if teacher['room']== newroom:
+            teacherclasscount = teacherclasscount + 1
+    #return str(teacherclasscount)
+
+    #check capacity of a room
+    mysqlst = "select * from classroom"
+    classroomlist = execute_read_query(myconn, mysqlst)
+    results = []
+    for classroom in classroomlist:
+        if classroom['id']== newroom:
+            results.append(classroom)
+    capacitycount = results[0]['capacity']
+    #return str(capacitycount)
+
+    #if all conditions met, then accept child into classroom
+    if (childclasscount < capacitycount) and (math.ceil(childclasscount/10) <= teacherclasscount):
+        sql = "insert into child(firstname, lastname, age, room) values ('%s','%s','%s','%s')" % (newfname, newlname, newage, newroom)
+        execute_update_query(myconn, sql)
+        return 'Add child request successful!'
+    else:
+        return 'Class full or something went wrong'
+
+   
+#update at id#
+@app.route('/api/child', methods=['PUT'])
+def api_update_child_byID():
+    request_data = request.get_json()
+    idtoupdate = request_data['id']
+    newfname = request_data['firstname']
+    newlname = request_data['lastname']
+    newage = request_data['age']
+    newroom = request_data['room']
+
+
+    #count all childs in a room
+    mycreds = creds.creds()
+    myconn = create_connection(mycreds.myhostname, mycreds.uname, mycreds.passwd, mycreds.dbname)
+    mysqlst = "select * from child"
+    childlist = execute_read_query(myconn, mysqlst)
+    childclasscount = 0
+    sameRoomFlag = 0
+    for child in childlist:
+        if child['room']== newroom:
+            childclasscount = childclasscount + 1
+        if (child['id'] == idtoupdate) and (child['room'] == newroom):
+            sameRoomFlag = sameRoomFlag + 1
+
+
+    #count all teachers to a room
+    mysqlst = "select * from teacher"
+    teacherlist = execute_read_query(myconn, mysqlst)
+    teacherclasscount = 0
+    for teacher in teacherlist:
+        if teacher['room']== newroom:
+            teacherclasscount = teacherclasscount + 1
+
+    #check capacity of a room
+    mysqlst = "select * from classroom"
+    classroomlist = execute_read_query(myconn, mysqlst)
+    results = []
+    for classroom in classroomlist:
+        if classroom['id']== newroom:
+            results.append(classroom)
+    capacitycount = results[0]['capacity']
+
+    #if all conditions met, then accept child update
+    if sameRoomFlag == 1:
+        sql = "UPDATE child SET firstname = '%s', lastname = '%s', age = '%s', room = '%s' WHERE id = '%s'" % (newfname, newlname, newage, newroom, idtoupdate)
+        execute_update_query(myconn, sql)
+        return 'Update child request successful!'
+    elif (childclasscount < capacitycount) and (math.ceil(childclasscount/10) <= teacherclasscount):
+        sql = "UPDATE child SET firstname = '%s', lastname = '%s', age = '%s', room = '%s' WHERE id = '%s'" % (newfname, newlname, newage, newroom, idtoupdate)
+        execute_update_query(myconn, sql)
+        return 'Update child request successful!'
+    else:
+        return 'Class full or something went wrong'
+
+
+#delete at id#
+@app.route('/api/child', methods=['DELETE'])
+def api_delete_child_byID():
+    request_data = request.get_json()
+    idtoupdate = request_data['id']
+    
+    mycreds = creds.creds()
+    myconn = create_connection(mycreds.myhostname, mycreds.uname, mycreds.passwd, mycreds.dbname)
+    sql = "DELETE FROM child where id = '%s'" % (idtoupdate)
+
+    execute_update_query(myconn, sql)
+        
+    return "Delete request successful!"
 
 
 #run the application to listen for user requests
