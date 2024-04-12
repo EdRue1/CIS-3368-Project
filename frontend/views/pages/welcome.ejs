@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../template/head'); %>
+
+</head>
+<body class="container">
+
+    <header>
+        <%- include('../template/head'); %>
+    </header>
+
+    <main>
+        <% if (locals.auth) { %>
+           WELCOME <%= user %>
+        <% } %>
+        <% if (!locals.auth) { %>
+            <%= user %>
+            <br>
+            YOU ARE NOT AUTHORIZED
+         <% } %>
+
+    </main>
+
+    <footer>
+        <%- include('../template/footer'); %>
+    </footer>
+
+</body>
+</html>
