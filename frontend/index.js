@@ -1,11 +1,9 @@
 const express = require('express')
 var path = require('path');
 var bodyParser = require('body-parser');
-const methodOverride = require('method-override')
 const app = express();
 const port = 3000;
-var idSearch = 0;
-var items = null
+var f_items = null
 
 const axios = require('axios');
 // view engine setup
@@ -17,9 +15,6 @@ app.use(express.static('./public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
-// this is to make the PUT method work (maybe...)
-// I found out about this here https://stackoverflow.com/questions/8054165/using-put-method-in-html-form
-//app.use(methodOverride('_method'));
 
 app.get('/',function (req, res) {
     res.render('pages/login')
@@ -49,24 +44,20 @@ app.post('/process_login', function(req, res){
         });
     }
   });
+
 // all facilities
 app.get('/facility',function (req, res) {
 
     axios.get('http://127.0.0.1:5000/api/facility/all')
     .then((response)=>{
-        items = response.data;
-        console.log(items);
+        f_items = response.data;
+        console.log(f_items);
         res.render('pages/facility',{
-            facility:items
+            facility:f_items
         });
     });
-
-
-
-
-
-
 })
+
 // single facility
 app.post('/s_facility', function (req, res) {
 var message = req.body.IdtoSearch;
@@ -78,14 +69,12 @@ axios.get(initial_api)
         let s_items = response.data;
         console.log(s_items);
         res.render('pages/facility',{
-            facility:items, 
+            facility:f_items, 
             s_facility:s_items
         });
     });
-
-
-
 })
+
 // add facility
 app.post('/a_facility', function (req, res) {
     var message2 = req.body.nametoadd;
@@ -98,12 +87,13 @@ app.post('/a_facility', function (req, res) {
         let a_item = response.data;
         console.log(a_item);
         res.render('pages/facility', {
-            facility: items, 
+            facility: f_items, 
             a_facility: a_item
         });
     })
 
 });
+
 // update facility
 app.post('/u_facility', function (req, res) {
     var message3 = req.body.idtoupdate;
@@ -119,8 +109,28 @@ app.post('/u_facility', function (req, res) {
         let updatedItem = response.data;
         console.log(updatedItem);
         res.render('pages/facility', {
-            facility: items, 
+            facility: f_items, 
             u_facility: updatedItem
+        });
+    })
+
+});
+
+// delete facility
+app.post('/d_facility', function (req, res) {
+    var message5 = req.body.factodel;
+    var initial_api = 'http://127.0.0.1:5000/api/facility'
+
+    axios.delete(initial_api, {data: {
+        id:message5
+    }
+    })
+    .then((response) => {
+        let d_item = response.data;
+        console.log(d_item);
+        res.render('pages/facility', {
+            facility: f_items, 
+            d_facility: d_item
         });
     })
 
