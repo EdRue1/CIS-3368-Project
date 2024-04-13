@@ -108,7 +108,7 @@ def api_delete_facility_byID():
 #/////////////////////////////////////CLASSROOM////////////////////////////////////////////////
 #get one classroom
 @app.route('/api/classroom', methods=['GET'])
-@basic_authentication
+#@basic_authentication
 def api_classroom_by_id():
     if 'id' in request.args:
         id = int(request.args['id'])
@@ -126,7 +126,7 @@ def api_classroom_by_id():
 
 #get all classrooms
 @app.route('/api/classroom/all', methods=['GET'])
-@basic_authentication
+#@basic_authentication
 def all_classroom_info():
     mycreds = creds.creds()
     myconn = create_connection(mycreds.myhostname, mycreds.uname, mycreds.passwd, mycreds.dbname)
@@ -136,7 +136,7 @@ def all_classroom_info():
 
 #add a classroom
 @app.route('/api/classroom', methods=['POST'])
-@basic_authentication
+#@basic_authentication
 def api_add_classroom():
     request_data = request.get_json()
     newcapa = request_data['capacity']
@@ -150,7 +150,7 @@ def api_add_classroom():
 
 #update at id#
 @app.route('/api/classroom', methods=['PUT'])
-@basic_authentication
+#@basic_authentication
 def api_update_classroom_byID():
     request_data = request.get_json()
     idtoupdate = request_data['id']
@@ -165,7 +165,7 @@ def api_update_classroom_byID():
 
 #delete at id#
 @app.route('/api/classroom', methods=['DELETE'])
-@basic_authentication
+#@basic_authentication
 def api_delete_plant_byID():
     request_data = request.get_json()
     idtoupdate = request_data['id']

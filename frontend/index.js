@@ -3,7 +3,10 @@ var path = require('path');
 var bodyParser = require('body-parser');
 const app = express();
 const port = 3000;
-var f_items = null
+var f_items = null;
+var cl_items = null;
+var t_items = null;
+var ch_items = null;
 
 const axios = require('axios');
 // view engine setup
@@ -16,13 +19,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
+//login page
 app.get('/',function (req, res) {
     res.render('pages/login')
 });
+//home page
 app.get('/home',function (req, res) {
     res.render('pages/home')
 });
 
+//check login
 app.post('/process_login', function(req, res){
     var user = req.body.username;
     var password = req.body.password;
@@ -44,7 +50,7 @@ app.post('/process_login', function(req, res){
         });
     }
   });
-
+///////////////////////////////////////////FACILITY////////////////////////////////////////////////////////////////
 // all facilities
 app.get('/facility',function (req, res) {
 
@@ -136,7 +142,105 @@ app.post('/d_facility', function (req, res) {
 
 });
 
+//////////////////////////////////////////////CLASSROOM///////////////////////////////////////////
+// all classrooms
+app.get('/classroom',function (req, res) {
 
+    axios.get('http://127.0.0.1:5000/api/classroom/all')
+    .then((response)=>{
+        cl_items = response.data;
+        console.log(cl_items);
+        res.render('pages/classroom',{
+            classroom:cl_items
+        });
+    });
+})
+
+// single classroom
+app.post('/s_classroom', function (req, res) {
+var message = req.body.IdtoSearch;
+var initial_api = 'http://127.0.0.1:5000/api/classroom?id='
+initial_api = initial_api + message;
+
+axios.get(initial_api)
+    .then((response)=>{
+        let s_items = response.data;
+        console.log(s_items);
+        res.render('pages/classroom',{
+            classroom:cl_items, 
+            s_classroom:s_items
+        });
+    });
+})
+
+// add classroom
+app.post('/a_classroom', function (req, res) {
+    var message5 = req.body.capatoadd;
+    var message2 = req.body.nametoadd;
+    var message6 = req.body.factoadd;
+    var initial_api = 'http://127.0.0.1:5000/api/classroom'
+
+    axios.post(initial_api, {
+        capacity: message5, 
+        name:message2, 
+        facility:message6
+    })
+    .then((response) => {
+        let a_item = response.data;
+        console.log(a_item);
+        res.render('pages/classroom', {
+            classroom: cl_items, 
+            a_classroom: a_item
+        });
+    })
+
+});
+
+// update classroom
+app.post('/u_classroom', function (req, res) {
+    var message3 = req.body.idtoupdate;
+    var message5 = req.body.capatoupdate;
+    var message2 = req.body.nametoupdate;
+    var message6 = req.body.factoupdate;
+    var initial_api = 'http://127.0.0.1:5000/api/classroom'
+
+    axios.put(initial_api, {
+            id:message3, 
+            capacity:message5,
+            name:message2,
+            facility:message6
+        
+    })
+    .then((response) => {
+        let updatedItem = response.data;
+        console.log(updatedItem);
+        res.render('pages/classroom', {
+            classroom: cl_items, 
+            u_classroom: updatedItem
+        });
+    })
+
+});
+
+// delete classroom
+app.post('/d_classroom', function (req, res) {
+    var message5 = req.body.clatodel;
+    var initial_api = 'http://127.0.0.1:5000/api/classroom'
+
+    axios.delete(initial_api, {data: {
+        id:message5
+    }
+    })
+    .then((response) => {
+        let d_item = response.data;
+        console.log(d_item);
+        res.render('pages/classroom', {
+            classroom: cl_items, 
+            d_classroom: d_item
+        });
+    })
+
+});
 
 
 

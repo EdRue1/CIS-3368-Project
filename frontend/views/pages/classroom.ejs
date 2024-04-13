@@ -1,0 +1,126 @@
+<%- include('../template/head')-%>
+
+<body class="text-center">
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <%- include('../template/nav')-%>
+
+        <div class="container bg-light text-dark">
+            <!-- All classrooms -->
+            <h1 class="cover-heading">All classrooms</h1>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Capacity</th>
+                        <th>Name</th>
+                        <th>Facility</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%locals.classroom.forEach(function(entry) {%>
+                    <tr>
+                        <td><%=entry.id%></td>
+                        <td><%=entry.capacity%></td>
+                        <td><%=entry.name%></td>
+                        <td><%=entry.facility%></td>
+                    </tr>
+                    <%});%>
+                </tbody>
+            </table>
+            <!-- Single classroom -->
+            <h1 class="cover-heading">Choose a classroom</h1>
+                    <form action="/s_classroom" method="post">
+                        <div class="form-group">
+                            <label for="IdtoSearch" class="form-label">ID</label>
+                            <input type="text" id="IdtoSearch" name="IdtoSearch" class="form-control" placeholder="IdtoSearch" required
+                            autofocus>
+                        </div>
+                        <input class="btn btn-lg btn-primary btn-block" type="submit">
+                        </form>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Capacity</th>
+                                    <th>Name</th>
+                                    <th>Facility</th>
+                                </tr>
+                                <% if (locals.s_classroom && locals.s_classroom.length > 0) { %>
+                                    <% locals.s_classroom.forEach(function(s_entry) { %>
+                                      <tr>
+                                        <td><%= s_entry.id %></td>
+                                        <td><%= s_entry.capacity%></td>
+                                        <td><%= s_entry.name %></td>
+                                        <td><%= s_entry.facility%></td>
+                                      </tr>
+                                    <% }); %>
+                                  <% } else { %>
+                                    <tr>
+                                      <td colspan="2">No classroom found with that ID.</td>
+                                    </tr>
+                                  <% }; %>
+                            </tbody>
+                        </table>
+                    <!-- Add a classroom -->
+                    <h1 class="cover-heading">Add a classroom</h1>
+                    <form action="/a_classroom" method="post">
+                        <div class="form-group">
+                            <label for="Newcapa" class="form-label">New capacity</label>
+                            <input type="text" id="capatoadd" name="capatoadd" class="form-control" placeholder="capatoadd" required
+                            autofocus>
+                            <label for="NewClassName" class="form-label">New classroom name</label>
+                            <input type="text" id="nametoadd" name="nametoadd" class="form-control" placeholder="nametoadd" required
+                            autofocus>
+                            <label for="FacID" class="form-label">Facility to add to</label>
+                            <input type="text" id="factoadd" name="factoadd" class="form-control" placeholder="factoadd" required
+                            autofocus>
+                        </div>
+                        <input class="btn btn-lg btn-primary btn-block" type="submit">
+                        </form>
+
+                    <!-- Update a classroom -->
+                    <h1 class="cover-heading">Update a classroom</h1>
+                    <form action="/u_classroom" method="post">
+                        <div class="form-group">
+                            <label for="UpdatetoID" class="form-label">Classroom ID to update</label>
+                            <input type="text" id="idtoupdate" name="idtoupdate" class="form-control" placeholder="idtoupdate" required
+                            autofocus>
+                            <label for="Updatetocapa" class="form-label">Capacity update</label>
+                            <input type="text" id="capatoupdate" name="capatoupdate" class="form-control" placeholder="capatoupdate" required
+                            autofocus>
+                            <label for="UpdateClaName" class="form-label">Classroom name update</label>
+                            <input type="text" id="nametoupdate" name="nametoupdate" class="form-control" placeholder="nametoupdate" required
+                            autofocus>
+                            <label for="UpdatetoFac" class="form-label">Facility ID to update</label>
+                            <input type="text" id="factoupdate" name="factoupdate" class="form-control" placeholder="factoupdate" required
+                            autofocus>
+                        </div>
+                        <input class="btn btn-lg btn-primary btn-block" type="submit">
+                        </form>
+
+                    <!-- Delete a classroom -->
+                    <h1 class="cover-heading">Delete a classroom</h1>
+                    <form action="/d_classroom" method="post">
+                        <div class="form-group">
+                            <label for="DelClaId" class="form-label">Del classroom id</label>
+                            <input type="text" id="clatodel" name="clatodel" class="form-control" placeholder="clatodel" required
+                            autofocus>
+                        </div>
+                        <input class="btn btn-lg btn-primary btn-block" type="submit">
+                        </form>
+                        
+
+
+
+        </div>
+
+        <%- include('../template/footer')-%>
+    </div>
+</body>
+<script>
+    //Set active nav link 
+    window.onload = function() {
+        document.getElementById('classroom').classList.add('active');
+      };
+</script>
+</html>
