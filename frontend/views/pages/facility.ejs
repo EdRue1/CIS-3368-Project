@@ -26,7 +26,7 @@
                     <form action="/s_facility" method="post">
                         <div class="form-group">
                             <label for="IdtoSearch" class="form-label">ID</label>
-                            <input type="text" id="IdtoSearch" name="IdtoSearch" class="form-control" placeholder="ID to Search" required
+                            <input type="text" id="IdtoSearch" name="IdtoSearch" class="form-control" placeholder="IdtoSearch" required
                             autofocus>
                         </div>
                         <input class="btn btn-lg btn-primary btn-block" type="submit">
@@ -52,38 +52,10 @@
                             </tbody>
                         </table>
 
-                        <h1 class="cover-heading">Add a facility</h1>
-                        <form action="/a_facility" method="post">
-                            <div class="form-group">
-                                <label for="nametoadd" class="form-label">Building Name</label>
-                                <input type="text" name="nametoadd" id="nametoadd" class="form-control" placeholder="Name to add"
-                                required>
-                             </div>
-                            <input class="btn btn-lg btn-primary btn-block" type="submit">
-                        </form>
 
-                        <h1 class="cover-heading">Update a facility</h1>
-                        <form action="/u_facility" method="post">
-                            <!-- <input type="hidden" name="_method" value="PUT">-->
-                            <div class="form-group">
-                                <label for="Idtoupdate" class="form-label">ID</label>
-                                <input type="number" id="Idtopdate" name="Idtoupdate" class="form-control" placeholder="ID to Update" required
-                                autofocus>
-                            </div>
-                            <div class="form-group">
-                                <label for="Nametoupdate" class="form-label">Building Name</label>
-                                <input type="text" name="Nametoupdate" id="Nametoupdate" class="form-control" placeholder="Name to Update"
-                                required>
-                             </div>
-                            <input class="btn btn-lg btn-primary btn-block" type="submit">
-                        </form>
-
-
-                        
-                            
 
         </div>
-        
+
         <%- include('../template/footer')-%>
     </div>
 </body>

@@ -51,35 +51,41 @@ app.post('/process_login', function(req, res){
   });
 // all facilities
 app.get('/facility',function (req, res) {
-  
-        axios.get('http://127.0.0.1:5000/api/facility/all')
-        .then((response)=>{
-            items = response.data;
-            console.log(items);
-            res.render('pages/facility',{
-                facility:items
-            });
+
+    axios.get('http://127.0.0.1:5000/api/facility/all')
+    .then((response)=>{
+        items = response.data;
+        console.log(items);
+        res.render('pages/facility',{
+            facility:items
         });
-});
+    });
+
+
+
+
+
+
+})
 // single facility
-app.get('/s_facility', function (req, res) {
-    var message = req.body.IdtoSearch;
-    var initial_api = 'http://127.0.0.1:5000/api/facility?id='
-    initial_api = initial_api + message;
+app.post('/s_facility', function (req, res) {
+var message = req.body.IdtoSearch;
+var initial_api = 'http://127.0.0.1:5000/api/facility?id='
+initial_api = initial_api + message;
 
-    axios.get(initial_api)
-        .then((response)=>{
-            let s_items = response.data;
-            console.log(s_items);
-            res.render('pages/facility',{
-                facility:items, 
-                s_facility:s_items
-            });
+axios.get(initial_api)
+    .then((response)=>{
+        let s_items = response.data;
+        console.log(s_items);
+        res.render('pages/facility',{
+            facility:items, 
+            s_facility:s_items
         });
+    });
 
 
 
-});
+})
 // add facility
 app.post('/a_facility', function (req, res) {
     var message2 = req.body.nametoadd;
