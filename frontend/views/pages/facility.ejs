@@ -5,6 +5,7 @@
         <%- include('../template/nav')-%>
 
         <div class="container bg-light text-dark">
+            <!-- All facilities -->
             <h1 class="cover-heading">All Facilities</h1>
             <table class="table table-striped">
                 <thead>
@@ -22,6 +23,7 @@
                     <%});%>
                 </tbody>
             </table>
+            <!-- Single facility -->
             <h1 class="cover-heading">Choose a facility</h1>
                     <form action="/s_facility" method="post">
                         <div class="form-group">
@@ -51,6 +53,33 @@
                                   <% }; %>
                             </tbody>
                         </table>
+                    <!-- Add a facility -->
+                    <h1 class="cover-heading">Add a facility</h1>
+                    <form action="/a_facility" method="post">
+                        <div class="form-group">
+                            <label for="NewFacName" class="form-label">New facility name</label>
+                            <input type="text" id="nametoadd" name="nametoadd" class="form-control" placeholder="nametoadd" required
+                            autofocus>
+                        </div>
+                        <input class="btn btn-lg btn-primary btn-block" type="submit">
+                        </form>
+
+                    <!-- Update a facility -->
+                    <h1 class="cover-heading">Update a facility</h1>
+                    <form action="/u_facility" method="post">
+                        <div class="form-group">
+                            <label for="UpdatetoID" class="form-label">New facility name</label>
+                            <input type="text" id="idtoupdate" name="idtoupdate" class="form-control" placeholder="idtoupdate" required
+                            autofocus>
+                            <label for="UpdateFacName" class="form-label">New facility name</label>
+                            <input type="text" id="nametoupdate" name="nametoupdate" class="form-control" placeholder="nametoupdate" required
+                            autofocus>
+                        </div>
+                        <input class="btn btn-lg btn-primary btn-block" type="submit">
+                        </form>
+
+            
+                        
 
 
 

@@ -94,18 +94,20 @@ app.post('/a_facility', function (req, res) {
     axios.post(initial_api, {
         name:message2
     })
-    .then(() => {
-        console.log(items);
+    .then((response) => {
+        let a_item = response.data;
+        console.log(a_item);
         res.render('pages/facility', {
-            facility: items
+            facility: items, 
+            a_facility: a_item
         });
     })
 
 });
 // update facility
 app.post('/u_facility', function (req, res) {
-    var message3 = req.body.Idtoupdate;
-    var message4 = req.body.Nametoupdate;
+    var message3 = req.body.idtoupdate;
+    var message4 = req.body.nametoupdate;
     var initial_api = 'http://127.0.0.1:5000/api/facility'
 
     axios.put(initial_api, {
@@ -113,14 +115,12 @@ app.post('/u_facility', function (req, res) {
             name:message4
         
     })
-    .then(() => {
-        
-    })
     .then((response) => {
-        const updatedItem = response.data;
+        let updatedItem = response.data;
         console.log(updatedItem);
         res.render('pages/facility', {
-            facility: updatedItem
+            facility: items, 
+            u_facility: updatedItem
         });
     })
 
