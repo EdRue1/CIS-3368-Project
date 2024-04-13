@@ -1,6 +1,7 @@
 const express = require('express')
 var path = require('path');
 var bodyParser = require('body-parser');
+const methodOverride = require('method-override')
 const app = express();
 const port = 3000;
 var idSearch = 0;
@@ -16,6 +17,9 @@ app.use(express.static('./public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
+// this is to make the PUT method work (maybe...)
+// I found out about this here https://stackoverflow.com/questions/8054165/using-put-method-in-html-form
+//app.use(methodOverride('_method'));
 
 app.get('/',function (req, res) {
     res.render('pages/login')
@@ -44,8 +48,8 @@ app.post('/process_login', function(req, res){
             auth: false
         });
     }
-  })
-
+  });
+// all facilities
 app.get('/facility',function (req, res) {
   
         axios.get('http://127.0.0.1:5000/api/facility/all')
@@ -56,15 +60,9 @@ app.get('/facility',function (req, res) {
                 facility:items
             });
         });
-
-        
-
-        
-
-    
-})
-
-app.post('/s_facility', function (req, res) {
+});
+// single facility
+app.get('/s_facility', function (req, res) {
     var message = req.body.IdtoSearch;
     var initial_api = 'http://127.0.0.1:5000/api/facility?id='
     initial_api = initial_api + message;
@@ -81,7 +79,48 @@ app.post('/s_facility', function (req, res) {
 
 
 
-})
+});
+// add facility
+app.post('/a_facility', function (req, res) {
+    var message2 = req.body.nametoadd;
+    var initial_api = 'http://127.0.0.1:5000/api/facility'
+
+    axios.post(initial_api, {
+        name:message2
+    })
+    .then(() => {
+        console.log(items);
+        res.render('pages/facility', {
+            facility: items
+        });
+    })
+
+});
+// update facility
+app.post('/u_facility', function (req, res) {
+    var message3 = req.body.Idtoupdate;
+    var message4 = req.body.Nametoupdate;
+    var initial_api = 'http://127.0.0.1:5000/api/facility'
+
+    axios.put(initial_api, {
+            id:message3, 
+            name:message4
+        
+    })
+    .then(() => {
+        
+    })
+    .then((response) => {
+        const updatedItem = response.data;
+        console.log(updatedItem);
+        res.render('pages/facility', {
+            facility: updatedItem
+        });
+    })
+
+});
+
+
 
 
 

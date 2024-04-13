@@ -70,7 +70,7 @@ def all_facility_info():
 
 #add a facility
 @app.route('/api/facility', methods=['POST'])
-@basic_authentication
+#@basic_authentication
 def api_add_facility():
     request_data = request.get_json()
     newFacname = request_data['name']
@@ -82,7 +82,7 @@ def api_add_facility():
 
 #update at id#
 @app.route('/api/facility', methods=['PUT'])
-@basic_authentication
+#@basic_authentication
 def api_update_facility_byID():
     request_data = request.get_json()
     idtoupdate = request_data['id']
@@ -95,7 +95,7 @@ def api_update_facility_byID():
 
 #delete at id#
 @app.route('/api/facility', methods=['DELETE'])
-@basic_authentication
+#@basic_authentication
 def api_delete_facility_byID():
     request_data = request.get_json()
     idtoupdate = request_data['id']
