@@ -35,14 +35,14 @@ def check_auth(username, password):
 
 #create an endpoint to run default home page request
 @app.route('/', methods=['GET'])
-@basic_authentication
+#@basic_authentication
 def home():
     return "<h1> Welcome </h1>"
 
 #//////////////////////////////FACILITY///////////////////////////////////////////////////////
 #get one facility
 @app.route('/api/facility', methods=['GET'])
-@basic_authentication
+#@basic_authentication
 def api_facility_by_id():
     if 'id' in request.args:
         id = int(request.args['id'])
@@ -60,7 +60,7 @@ def api_facility_by_id():
 
 #get all facilities
 @app.route('/api/facility/all', methods=['GET'])
-@basic_authentication
+#@basic_authentication
 def all_facility_info():
     mycreds = creds.creds()
     myconn = create_connection(mycreds.myhostname, mycreds.uname, mycreds.passwd, mycreds.dbname)

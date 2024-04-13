@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../template/head'); %>
+
+</head>
+<body class="text-center">
+
+    <header>
+        <%- include('../template/head'); %>
+    </header>
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <main>
+        <% if (locals.auth) { %>
+           WELCOME <%= user %>
+
+        <main role="main" class="inner cover">
+            <h1 class="cover-heading">Succesfully logged in</h1>
+            <p class="lead">Press the button to continue to the home page
+            </p>
+            <p class="lead">
+                <a link = "home " href="/home" class="btn btn-lg btn-secondary">Continue ></a>
+            </p>
+        </main>
+
+           
+        <% } %>
+        <% if (!locals.auth) { %>
+            <%= user %>
+            <br>
+            YOU ARE NOT AUTHORIZED
+         <% } %>
+
+    </main>
+
+    <footer>
+        <%- include('../template/footer'); %>
+    </footer>
+    </div>
+
+    
+
+</body>
+</html>

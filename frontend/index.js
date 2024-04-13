@@ -3,7 +3,10 @@ var path = require('path');
 var bodyParser = require('body-parser');
 const app = express();
 const port = 3000;
-//const axios = require('axios');
+var idSearch = 0;
+var items = null
+
+const axios = require('axios');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -29,33 +32,59 @@ app.post('/process_login', function(req, res){
     // Then validate user input with user data retrived from database.
     if(user === 'admin' && password === 'password')
     {
-        res.render('pages/home.ejs', {
+        res.render('pages/continue.ejs', {
             user: user,
             auth: true
         });
     }
     else
     {
-        res.render('pages/home.ejs', {
+        res.render('pages/continue.ejs', {
             user: 'UNAUTHORIZED',
             auth: false
         });
     }
   })
 
-app.get('/links',function (req, res) {
-    //array with items to send
-    var items = [
-        {name:'node.js',url:'https://nodejs.org/en/'},
-        {name:'ejs',url:'https://ejs.co'},
-        {name:'expressjs',url:'https://expressjs.com'},
-        {name:'vuejs',url:'https://vuejs.org'},
-        {name:'nextjs',url:'https://nextjs.org'}];
+app.get('/facility',function (req, res) {
+  
+        axios.get('http://127.0.0.1:5000/api/facility/all')
+        .then((response)=>{
+            items = response.data;
+            console.log(items);
+            res.render('pages/facility',{
+                facility:items
+            });
+        });
 
-    res.render('pages/links',{
-        links:items
-    })
-});
+        
+
+        
+
+    
+})
+
+app.post('/s_facility', function (req, res) {
+    var message = req.body.IdtoSearch;
+    var initial_api = 'http://127.0.0.1:5000/api/facility?id='
+    initial_api = initial_api + message;
+
+    axios.get(initial_api)
+        .then((response)=>{
+            let s_items = response.data;
+            console.log(s_items);
+            res.render('pages/facility',{
+                facility:items, 
+                s_facility:s_items
+            });
+        });
+
+
+
+})
+
+
+
 
 app.get('/list',function (req, res) {
     //array with items to send

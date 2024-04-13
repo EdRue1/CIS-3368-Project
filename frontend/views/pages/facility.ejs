@@ -1,0 +1,68 @@
+<%- include('../template/head')-%>
+
+<body class="text-center">
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <%- include('../template/nav')-%>
+
+        <div class="container bg-light text-dark">
+            <h1 class="cover-heading">All Facilities</h1>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Building Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%locals.facility.forEach(function(entry) {%>
+                    <tr>
+                        <td><%=entry.id%></td>
+                        <td><%=entry.name%></td>
+                    </tr>
+                    <%});%>
+                </tbody>
+            </table>
+            <h1 class="cover-heading">Choose a facility</h1>
+                    <form action="/s_facility" method="post">
+                        <div class="form-group">
+                            <label for="IdtoSearch" class="form-label">ID</label>
+                            <input type="text" id="IdtoSearch" name="IdtoSearch" class="form-control" placeholder="IdtoSearch" required
+                            autofocus>
+                        </div>
+                        <input class="btn btn-lg btn-primary btn-block" type="submit">
+                        </form>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Building Name</th>
+                                </tr>
+                                <% if (locals.s_facility && locals.s_facility.length > 0) { %>
+                                    <% locals.s_facility.forEach(function(s_entry) { %>
+                                      <tr>
+                                        <td><%= s_entry.id %></td>
+                                        <td><%= s_entry.name %></td>
+                                      </tr>
+                                    <% }); %>
+                                  <% } else { %>
+                                    <tr>
+                                      <td colspan="2">No facility found with that ID.</td>
+                                    </tr>
+                                  <% }; %>
+                            </tbody>
+                        </table>
+
+                
+
+        </div>
+        
+        <%- include('../template/footer')-%>
+    </div>
+</body>
+<script>
+    //Set active nav link 
+    window.onload = function() {
+        document.getElementById('facility').classList.add('active');
+      };
+</script>
+</html>
