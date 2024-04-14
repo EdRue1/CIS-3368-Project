@@ -178,7 +178,7 @@ def api_delete_plant_byID():
 #////////////////////////////////////////TEACHER//////////////////////////////////////////////////
 #get one teacher
 @app.route('/api/teacher', methods=['GET'])
-@basic_authentication
+#@basic_authentication
 def api_teacher_by_id():
     if 'id' in request.args:
         id = int(request.args['id'])
@@ -196,7 +196,7 @@ def api_teacher_by_id():
 
 #get all teachers
 @app.route('/api/teacher/all', methods=['GET'])
-@basic_authentication
+#@basic_authentication
 def all_teachers_info():
     mycreds = creds.creds()
     myconn = create_connection(mycreds.myhostname, mycreds.uname, mycreds.passwd, mycreds.dbname)
@@ -206,7 +206,7 @@ def all_teachers_info():
 
 #add a teacher
 @app.route('/api/teacher', methods=['POST'])
-@basic_authentication
+#@basic_authentication
 def api_add_teacher():
     request_data = request.get_json()
     newfname = request_data['firstname']
@@ -220,7 +220,7 @@ def api_add_teacher():
 
 #update at id#
 @app.route('/api/teacher', methods=['PUT'])
-@basic_authentication
+#@basic_authentication
 def api_update_teacher_byID():
     request_data = request.get_json()
     idtoupdate = request_data['id']
@@ -235,7 +235,7 @@ def api_update_teacher_byID():
 
 #delete at id#
 @app.route('/api/teacher', methods=['DELETE'])
-@basic_authentication
+#@basic_authentication
 def api_delete_teacher_byID():
     request_data = request.get_json()
     idtoupdate = request_data['id']

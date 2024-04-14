@@ -1,0 +1,126 @@
+<%- include('../template/head')-%>
+
+<body class="text-center">
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <%- include('../template/nav')-%>
+
+        <div class="container bg-light text-dark">
+            <!-- All teachers -->
+            <h1 class="cover-heading">All teachers</h1>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Room</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%locals.teacher.forEach(function(entry) {%>
+                    <tr>
+                        <td><%=entry.id%></td>
+                        <td><%=entry.firstname%></td>
+                        <td><%=entry.lastname%></td>
+                        <td><%=entry.room%></td>
+                    </tr>
+                    <%});%>
+                </tbody>
+            </table>
+            <!-- Single teacher -->
+            <h1 class="cover-heading">Choose a teacher</h1>
+                    <form action="/s_teacher" method="post">
+                        <div class="form-group">
+                            <label for="IdtoSearch" class="form-label">ID</label>
+                            <input type="text" id="IdtoSearch" name="IdtoSearch" class="form-control" placeholder="IdtoSearch" required
+                            autofocus>
+                        </div>
+                        <input class="btn btn-lg btn-primary btn-block" type="submit">
+                        </form>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Room</th>
+                                </tr>
+                                <% if (locals.s_teacher && locals.s_teacher.length > 0) { %>
+                                    <% locals.s_teacher.forEach(function(s_entry) { %>
+                                      <tr>
+                                        <td><%= s_entry.id %></td>
+                                        <td><%= s_entry.firstname%></td>
+                                        <td><%= s_entry.lastname %></td>
+                                        <td><%= s_entry.room%></td>
+                                      </tr>
+                                    <% }); %>
+                                  <% } else { %>
+                                    <tr>
+                                      <td colspan="2">No teacher found with that ID.</td>
+                                    </tr>
+                                  <% }; %>
+                            </tbody>
+                        </table>
+                    <!-- Add a teacher -->
+                    <h1 class="cover-heading">Add a teacher</h1>
+                    <form action="/a_teacher" method="post">
+                        <div class="form-group">
+                            <label for="Newteacf" class="form-label">New Teacher First Name</label>
+                            <input type="text" id="fnamtoadd" name="fnamtoadd" class="form-control" placeholder="fnamtoadd" required
+                            autofocus>
+                            <label for="Newteacl" class="form-label">New Teacher Last Name</label>
+                            <input type="text" id="lnamtoadd" name="lnamtoadd" class="form-control" placeholder="lnamtoadd" required
+                            autofocus>
+                            <label for="Newroomadd" class="form-label">Room to add to</label>
+                            <input type="text" id="clrmtoadd" name="clrmtoadd" class="form-control" placeholder="clrmtoadd" required
+                            autofocus>
+                        </div>
+                        <input class="btn btn-lg btn-primary btn-block" type="submit">
+                        </form>
+
+                    <!-- Update a teacher -->
+                    <h1 class="cover-heading">Update a teacher</h1>
+                    <form action="/u_teacher" method="post">
+                        <div class="form-group">
+                            <label for="TeachIDUP" class="form-label">Teacher ID to update</label>
+                            <input type="text" id="idtoupdate" name="idtoupdate" class="form-control" placeholder="idtoupdate" required
+                            autofocus>
+                            <label for="Updatetofname" class="form-label">Teacher First Name to Update</label>
+                            <input type="text" id="fnamtoupdate" name="fnamtoupdate" class="form-control" placeholder="fnamtoupdate" required
+                            autofocus>
+                            <label for="Updatetolname" class="form-label">Teacher Last Name to Update</label>
+                            <input type="text" id="lnamtoupdate" name="lnamtoupdate" class="form-control" placeholder="lnamtoupdate" required
+                            autofocus>
+                            <label for="UpdatetoClrm" class="form-label">Classroom to update</label>
+                            <input type="text" id="clrmtoupdate" name="clrmtoupdate" class="form-control" placeholder="clrmtoupdate" required
+                            autofocus>
+                        </div>
+                        <input class="btn btn-lg btn-primary btn-block" type="submit">
+                        </form>
+
+                    <!-- Delete a teacher -->
+                    <h1 class="cover-heading">Delete a teacher</h1>
+                    <form action="/d_teacher" method="post">
+                        <div class="form-group">
+                            <label for="DelTeaId" class="form-label">Del teacher id</label>
+                            <input type="text" id="teatodel" name="teatodel" class="form-control" placeholder="teatodel" required
+                            autofocus>
+                        </div>
+                        <input class="btn btn-lg btn-primary btn-block" type="submit">
+                        </form>
+                        
+
+
+
+        </div>
+
+        <%- include('../template/footer')-%>
+    </div>
+</body>
+<script>
+    //Set active nav link 
+    window.onload = function() {
+        document.getElementById('classroom').classList.add('active');
+      };
+</script>
+</html>

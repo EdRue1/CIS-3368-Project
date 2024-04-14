@@ -242,6 +242,105 @@ app.post('/d_classroom', function (req, res) {
 
 });
 
+/////////////////////////////////////////TEACHER////////////////////////////////////////////////
+// all teachers
+app.get('/teacher',function (req, res) {
+
+    axios.get('http://127.0.0.1:5000/api/teacher/all')
+    .then((response)=>{
+        t_items = response.data;
+        console.log(t_items);
+        res.render('pages/teacher',{
+            teacher:t_items
+        });
+    });
+})
+
+// single teacher
+app.post('/s_teacher', function (req, res) {
+var message = req.body.IdtoSearch;
+var initial_api = 'http://127.0.0.1:5000/api/teacher?id='
+initial_api = initial_api + message;
+
+axios.get(initial_api)
+    .then((response)=>{
+        let s_items = response.data;
+        console.log(s_items);
+        res.render('pages/teacher',{
+            teacher:t_items, 
+            s_teacher:s_items
+        });
+    });
+})
+
+// add teacher
+app.post('/a_teacher', function (req, res) {
+    var message5 = req.body.fnamtoadd;
+    var message2 = req.body.lnamtoadd;
+    var message6 = req.body.clrmtoadd;
+    var initial_api = 'http://127.0.0.1:5000/api/teacher'
+
+    axios.post(initial_api, {
+        firstname: message5, 
+        lastname:message2, 
+        room:message6
+    })
+    .then((response) => {
+        let a_item = response.data;
+        console.log(a_item);
+        res.render('pages/teacher', {
+            teacher: t_items, 
+            a_teacher: a_item
+        });
+    })
+
+});
+
+// update teacher
+app.post('/u_teacher', function (req, res) {
+    var message3 = req.body.idtoupdate;
+    var message5 = req.body.fnamtoupdate;
+    var message2 = req.body.lnamtoupdate;
+    var message6 = req.body.clrmtoupdate;
+    var initial_api = 'http://127.0.0.1:5000/api/teacher'
+
+    axios.put(initial_api, {
+            id:message3, 
+            firstname:message5,
+            lastname:message2,
+            room:message6
+        
+    })
+    .then((response) => {
+        let updatedItem = response.data;
+        console.log(updatedItem);
+        res.render('pages/teacher', {
+            teacher: t_items, 
+            u_teacher: updatedItem
+        });
+    })
+
+});
+
+// delete teacher
+app.post('/d_teacher', function (req, res) {
+    var message5 = req.body.teatodel;
+    var initial_api = 'http://127.0.0.1:5000/api/teacher'
+
+    axios.delete(initial_api, {data: {
+        id:message5
+    }
+    })
+    .then((response) => {
+        let d_item = response.data;
+        console.log(d_item);
+        res.render('pages/teacher', {
+            teacher: t_items, 
+            d_teacher: d_item
+        });
+    })
+
+});
 
 
 
