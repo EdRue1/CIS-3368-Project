@@ -3,8 +3,20 @@
 <body class="text-center">
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
         <%- include('../template/nav')-%>
-
+        <!-- Tab links -->
         <div class="container bg-light text-dark">
+            <h4 class="cover-heading">Data might not immediately update. If it does not then click the name of the table in the nav bar to update</h1>
+        <div class="tab">
+            <button class="tablinks" onclick="openTab(event, 'All')">All</button>
+            <button class="tablinks" onclick="openTab(event, 'Single')">Single</button>
+            <button class="tablinks" onclick="openTab(event, 'Add')">Add</button>
+            <button class="tablinks" onclick="openTab(event, 'Update')">Update</button>
+            <button class="tablinks" onclick="openTab(event, 'Delete')">Delete</button>
+        </div>
+
+
+        <!-- Tab content -->
+        <div id="All" class="tabcontent">
             <!-- All child -->
             <h1 class="cover-heading">All children</h1>
             <table class="table table-striped">
@@ -29,6 +41,9 @@
                     <%});%>
                 </tbody>
             </table>
+        </div>
+        
+        <div id="Single" class="tabcontent">
             <!-- Single child -->
             <h1 class="cover-heading">Choose a child</h1>
                     <form action="/s_child" method="post">
@@ -65,50 +80,62 @@
                                   <% }; %>
                             </tbody>
                         </table>
-                    <!-- Add a child -->
-                    <h1 class="cover-heading">Add a child</h1>
-                    <form action="/a_child" method="post">
-                        <div class="form-group">
-                            <label for="Newchif" class="form-label">New Child First Name</label>
-                            <input type="text" id="fnamtoadd" name="fnamtoadd" class="form-control" placeholder="fnamtoadd" required
-                            autofocus>
-                            <label for="Newchil" class="form-label">New Child Last Name</label>
-                            <input type="text" id="lnamtoadd" name="lnamtoadd" class="form-control" placeholder="lnamtoadd" required
-                            autofocus>
-                            <label for="Newchia" class="form-label">New Child Age</label>
-                            <input type="number" id="chage" name="chage" class="form-control" placeholder="chage" required
-                            autofocus>
-                            <label for="Newroomadd" class="form-label">Room to add to</label>
-                            <input type="number" id="clrmtoadd" name="clrmtoadd" class="form-control" placeholder="clrmtoadd" required
-                            autofocus>
-                        </div>
-                        <input class="btn btn-lg btn-primary btn-block" type="submit">
-                        </form>
+        </div>
+        
+        <div id="Add" class="tabcontent">
+             <!-- Add a child -->
+             <h1 class="cover-heading">Add a child</h1>
+             <form action="/a_child" method="post">
+                 <div class="form-group">
+                     <label for="Newchif" class="form-label">New Child First Name</label>
+                     <input type="text" id="fnamtoadd" name="fnamtoadd" class="form-control" placeholder="fnamtoadd" required
+                     autofocus>
+                     <label for="Newchil" class="form-label">New Child Last Name</label>
+                     <input type="text" id="lnamtoadd" name="lnamtoadd" class="form-control" placeholder="lnamtoadd" required
+                     autofocus>
+                     <label for="Newchia" class="form-label">New Child Age</label>
+                     <input type="number" id="chage" name="chage" class="form-control" placeholder="chage" required
+                     autofocus>
+                     <label for="Newroomadd" class="form-label">Room to add to</label>
+                     <input type="number" id="clrmtoadd" name="clrmtoadd" class="form-control" placeholder="clrmtoadd" required
+                     autofocus>
+                 </div>
+                 <input class="btn btn-lg btn-primary btn-block" type="submit">
+                 </form>
 
-                    <!-- Update a child -->
-                    <h1 class="cover-heading">Update a child</h1>
-                    <form action="/u_child" method="post">
-                        <div class="form-group">
-                            <label for="ChildIDUP" class="form-label">Child ID to update</label>
-                            <input type="text" id="idtoupdate" name="idtoupdate" class="form-control" placeholder="idtoupdate" required
-                            autofocus>
-                            <label for="Updatecofname" class="form-label">Child First Name to Update</label>
-                            <input type="text" id="fnamtoupdate" name="fnamtoupdate" class="form-control" placeholder="fnamtoupdate" required
-                            autofocus>
-                            <label for="Updatecolname" class="form-label">Child Last Name to Update</label>
-                            <input type="text" id="lnamtoupdate" name="lnamtoupdate" class="form-control" placeholder="lnamtoupdate" required
-                            autofocus>
-                            <label for="Newchia" class="form-label">Child Age to Update</label>
-                            <input type="number" id="chage" name="chage" class="form-control" placeholder="chage" required
-                            autofocus>
-                            <label for="UpdatetoClrm" class="form-label">Classroom to update</label>
-                            <input type="number" id="clrmtoupdate" name="clrmtoupdate" class="form-control" placeholder="clrmtoupdate" required
-                            autofocus>
-                        </div>
-                        <input class="btn btn-lg btn-primary btn-block" type="submit">
-                        </form>
+        </div>
 
-                    <!-- Delete a child -->
+        <div id="Update" class="tabcontent">
+            <!-- Update a child -->
+            <h1 class="cover-heading">Update a child</h1>
+            <form action="/u_child" method="post">
+                <div class="form-group">
+                    <label for="ChildIDUP" class="form-label">Child ID to update</label>
+                    <input type="text" id="idtoupdate" name="idtoupdate" class="form-control" placeholder="idtoupdate" required
+                    autofocus>
+                    <label for="Updatecofname" class="form-label">Child First Name to Update</label>
+                    <input type="text" id="fnamtoupdate" name="fnamtoupdate" class="form-control" placeholder="fnamtoupdate" required
+                    autofocus>
+                    <label for="Updatecolname" class="form-label">Child Last Name to Update</label>
+                    <input type="text" id="lnamtoupdate" name="lnamtoupdate" class="form-control" placeholder="lnamtoupdate" required
+                    autofocus>
+                    <label for="Newchia" class="form-label">Child Age to Update</label>
+                    <input type="number" id="chage" name="chage" class="form-control" placeholder="chage" required
+                    autofocus>
+                    <label for="UpdatetoClrm" class="form-label">Classroom to update</label>
+                    <input type="number" id="clrmtoupdate" name="clrmtoupdate" class="form-control" placeholder="clrmtoupdate" required
+                    autofocus>
+                </div>
+                <input class="btn btn-lg btn-primary btn-block" type="submit">
+                </form>
+
+
+
+
+       </div>
+
+       <div id="Delete" class="tabcontent">
+        <!-- Delete a child -->
                     <h1 class="cover-heading">Delete a child</h1>
                     <form action="/d_child" method="post">
                         <div class="form-group">
@@ -118,11 +145,21 @@
                         </div>
                         <input class="btn btn-lg btn-primary btn-block" type="submit">
                         </form>
+
+
+   </div>
+
+
+
+
+
+
+                    
                         
 
 
 
-        </div>
+ </div>
 
         <%- include('../template/footer')-%>
     </div>
@@ -132,5 +169,26 @@
     window.onload = function() {
         document.getElementById('child').classList.add('active');
       };
+
+    function openTab(evt, cityName) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
 </script>
 </html>
