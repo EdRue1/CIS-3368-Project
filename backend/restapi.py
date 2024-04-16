@@ -248,7 +248,7 @@ def api_delete_teacher_byID():
 #//////////////////////////////////////////CHILD////////////////////////////////////////////////////
 #get one child
 @app.route('/api/child', methods=['GET'])
-@basic_authentication
+#@basic_authentication
 def api_child_by_id():
     if 'id' in request.args:
         id = int(request.args['id'])
@@ -266,7 +266,7 @@ def api_child_by_id():
 
 #get all children
 @app.route('/api/child/all', methods=['GET'])
-@basic_authentication
+#@basic_authentication
 def all_child_info():
     mycreds = creds.creds()
     myconn = create_connection(mycreds.myhostname, mycreds.uname, mycreds.passwd, mycreds.dbname)
@@ -276,13 +276,15 @@ def all_child_info():
 
 #add a child
 @app.route('/api/child', methods=['POST'])
-@basic_authentication
+#@basic_authentication
 def api_add_child():
     request_data = request.get_json()
     newfname = request_data['firstname']
     newlname = request_data['lastname']
     newage = request_data['age']
     newroom = request_data['room']
+    newage = int(newage)
+    newroom = int(newroom)
 
     #count all childs in a room
     mycreds = creds.creds()
@@ -291,24 +293,28 @@ def api_add_child():
     childlist = execute_read_query(myconn, mysqlst)
     childclasscount = 0
     for child in childlist:
-        if child['room']== newroom:
-            childclasscount = childclasscount + 1
+        for key, value in child.items():
+            if (key=='room') and (value== newroom):
+                childclasscount = childclasscount + 1
 
     #count all teachers to a room
     mysqlst = "select * from teacher"
     teacherlist = execute_read_query(myconn, mysqlst)
     teacherclasscount = 0
     for teacher in teacherlist:
-        if teacher['room']== newroom:
-            teacherclasscount = teacherclasscount + 1
+        for key, value in teacher.items():
+            if (key=='room') and (value== newroom):
+                teacherclasscount = teacherclasscount + 1
 
     #check capacity of a room
     mysqlst = "select * from classroom"
     classroomlist = execute_read_query(myconn, mysqlst)
     results = []
     for classroom in classroomlist:
-        if classroom['id']== newroom:
-            results.append(classroom)
+        for key, value in classroom.items():
+            if (key=='id') and (value==newroom):
+                results.append(classroom)
+
     capacitycount = results[0]['capacity']
 
     #if all conditions met, then accept child into classroom
@@ -322,7 +328,7 @@ def api_add_child():
    
 #update at id#
 @app.route('/api/child', methods=['PUT'])
-@basic_authentication
+#@basic_authentication
 def api_update_child_byID():
     request_data = request.get_json()
     idtoupdate = request_data['id']
@@ -330,6 +336,11 @@ def api_update_child_byID():
     newlname = request_data['lastname']
     newage = request_data['age']
     newroom = request_data['room']
+    idtoupdate = int(idtoupdate)
+    newage = int(newage)
+    newroom = int(newroom)
+    
+    
 
     #count all childs in a room
     mycreds = creds.creds()
@@ -339,11 +350,13 @@ def api_update_child_byID():
     childclasscount = 0
     sameRoomFlag = 0
     for child in childlist:
+        print(type(child['room']))
         if child['room']== newroom:
             childclasscount = childclasscount + 1
         #check if the child being updated wil remain in the same class
         if (child['id'] == idtoupdate) and (child['room'] == newroom):
             sameRoomFlag = sameRoomFlag + 1
+
 
     #count all teachers to a room
     mysqlst = "select * from teacher"
@@ -377,7 +390,7 @@ def api_update_child_byID():
 
 #delete at id#
 @app.route('/api/child', methods=['DELETE'])
-@basic_authentication
+#@basic_authentication
 def api_delete_child_byID():
     request_data = request.get_json()
     idtoupdate = request_data['id']

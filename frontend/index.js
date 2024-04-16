@@ -342,6 +342,122 @@ app.post('/d_teacher', function (req, res) {
 
 });
 
+////////////////////////////////////////////CHILD/////////////////////////////////////////////////
+// all child
+app.get('/child',function (req, res) {
+
+    axios.get('http://127.0.0.1:5000/api/child/all')
+    .then((response)=>{
+        ch_items = response.data;
+        console.log(ch_items);
+        res.render('pages/child',{
+            child:ch_items
+        });
+    });
+})
+
+// single child
+app.post('/s_child', function (req, res) {
+var message = req.body.IdtoSearch;
+var initial_api = 'http://127.0.0.1:5000/api/child?id='
+initial_api = initial_api + message;
+
+axios.get(initial_api)
+    .then((response)=>{
+        let s_items = response.data;
+        console.log(s_items);
+        res.render('pages/child',{
+            child:ch_items, 
+            s_child:s_items
+        });
+    });
+})
+
+// add child
+app.post('/a_child', function (req, res) {
+    var message5 = req.body.fnamtoadd;
+    //console.log(message5);
+    var message2 = req.body.lnamtoadd;
+    //console.log(message2);
+    var message7 = req.body.chage;
+    //console.log(message7);
+    var message6 = req.body.clrmtoadd;
+    //console.log(message6);
+    var initial_api = 'http://127.0.0.1:5000/api/child'
+
+    axios.post(initial_api, {
+        firstname: message5, 
+        lastname: message2, 
+        age: message7, 
+        room: message6
+    })
+    .then((response) => {
+        let a_item = response.data;
+        console.log(a_item);
+        res.render('pages/child', {
+            child: ch_items, 
+            a_child: a_item
+        });
+    })
+
+});
+
+// update child
+app.post('/u_child', function (req, res) {
+    var message3 = req.body.idtoupdate;
+    var message5 = req.body.fnamtoupdate;
+    var message2 = req.body.lnamtoupdate;
+    var message7 = req.body.chage;
+    var message6 = req.body.clrmtoupdate;
+    var initial_api = 'http://127.0.0.1:5000/api/child'
+
+    axios.put(initial_api, {
+            id:message3, 
+            firstname:message5,
+            lastname:message2,
+            age: message7,
+            room:message6
+        
+    })
+    .then((response) => {
+        let updatedItem = response.data;
+        console.log(updatedItem);
+        res.render('pages/child', {
+            child: ch_items, 
+            u_child: updatedItem
+        });
+    })
+
+});
+
+// delete child
+app.post('/d_child', function (req, res) {
+    var message5 = req.body.chitodel;
+    var initial_api = 'http://127.0.0.1:5000/api/child'
+
+    axios.delete(initial_api, {data: {
+        id:message5
+    }
+    })
+    .then((response) => {
+        let d_item = response.data;
+        console.log(d_item);
+        res.render('pages/child', {
+            child: ch_items, 
+            d_child: d_item
+        });
+    })
+
+});
+
+
+
+
+
+
+
+
+
 
 
 app.get('/list',function (req, res) {

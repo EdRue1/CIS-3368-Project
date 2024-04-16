@@ -5,31 +5,33 @@
         <%- include('../template/nav')-%>
 
         <div class="container bg-light text-dark">
-            <!-- All teachers -->
-            <h1 class="cover-heading">All teachers</h1>
+            <!-- All child -->
+            <h1 class="cover-heading">All children</h1>
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>First Name</th>
                         <th>Last Name</th>
+                        <th>Age</th>
                         <th>Room</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <%locals.teacher.forEach(function(entry) {%>
+                    <%locals.child.forEach(function(entry) {%>
                     <tr>
                         <td><%=entry.id%></td>
                         <td><%=entry.firstname%></td>
                         <td><%=entry.lastname%></td>
+                        <td><%=entry.age%></td>
                         <td><%=entry.room%></td>
                     </tr>
                     <%});%>
                 </tbody>
             </table>
-            <!-- Single teacher -->
-            <h1 class="cover-heading">Choose a teacher</h1>
-                    <form action="/s_teacher" method="post">
+            <!-- Single child -->
+            <h1 class="cover-heading">Choose a child</h1>
+                    <form action="/s_child" method="post">
                         <div class="form-group">
                             <label for="IdtoSearch" class="form-label">ID</label>
                             <input type="text" id="IdtoSearch" name="IdtoSearch" class="form-control" placeholder="IdtoSearch" required
@@ -43,67 +45,75 @@
                                     <th>ID</th>
                                     <th>First Name</th>
                                     <th>Last Name</th>
+                                    <th>Age</th>
                                     <th>Room</th>
                                 </tr>
-                                <% if (locals.s_teacher && locals.s_teacher.length > 0) { %>
-                                    <% locals.s_teacher.forEach(function(s_entry) { %>
+                                <% if (locals.s_child && locals.s_child.length > 0) { %>
+                                    <% locals.s_child.forEach(function(s_entry) { %>
                                       <tr>
                                         <td><%= s_entry.id %></td>
                                         <td><%= s_entry.firstname%></td>
                                         <td><%= s_entry.lastname %></td>
+                                        <td><%= s_entry.age %></td>
                                         <td><%= s_entry.room%></td>
                                       </tr>
                                     <% }); %>
                                   <% } else { %>
                                     <tr>
-                                      <td colspan="2">No teacher found with that ID.</td>
+                                      <td colspan="2">No child found with that ID.</td>
                                     </tr>
                                   <% }; %>
                             </tbody>
                         </table>
-                    <!-- Add a teacher -->
-                    <h1 class="cover-heading">Add a teacher</h1>
-                    <form action="/a_teacher" method="post">
+                    <!-- Add a child -->
+                    <h1 class="cover-heading">Add a child</h1>
+                    <form action="/a_child" method="post">
                         <div class="form-group">
-                            <label for="Newteacf" class="form-label">New Teacher First Name</label>
+                            <label for="Newchif" class="form-label">New Child First Name</label>
                             <input type="text" id="fnamtoadd" name="fnamtoadd" class="form-control" placeholder="fnamtoadd" required
                             autofocus>
-                            <label for="Newteacl" class="form-label">New Teacher Last Name</label>
+                            <label for="Newchil" class="form-label">New Child Last Name</label>
                             <input type="text" id="lnamtoadd" name="lnamtoadd" class="form-control" placeholder="lnamtoadd" required
                             autofocus>
+                            <label for="Newchia" class="form-label">New Child Age</label>
+                            <input type="number" id="chage" name="chage" class="form-control" placeholder="chage" required
+                            autofocus>
                             <label for="Newroomadd" class="form-label">Room to add to</label>
-                            <input type="text" id="clrmtoadd" name="clrmtoadd" class="form-control" placeholder="clrmtoadd" required
+                            <input type="number" id="clrmtoadd" name="clrmtoadd" class="form-control" placeholder="clrmtoadd" required
                             autofocus>
                         </div>
                         <input class="btn btn-lg btn-primary btn-block" type="submit">
                         </form>
 
-                    <!-- Update a teacher -->
-                    <h1 class="cover-heading">Update a teacher</h1>
-                    <form action="/u_teacher" method="post">
+                    <!-- Update a child -->
+                    <h1 class="cover-heading">Update a child</h1>
+                    <form action="/u_child" method="post">
                         <div class="form-group">
-                            <label for="TeachIDUP" class="form-label">Teacher ID to update</label>
+                            <label for="ChildIDUP" class="form-label">Child ID to update</label>
                             <input type="text" id="idtoupdate" name="idtoupdate" class="form-control" placeholder="idtoupdate" required
                             autofocus>
-                            <label for="Updatetofname" class="form-label">Teacher First Name to Update</label>
+                            <label for="Updatecofname" class="form-label">Child First Name to Update</label>
                             <input type="text" id="fnamtoupdate" name="fnamtoupdate" class="form-control" placeholder="fnamtoupdate" required
                             autofocus>
-                            <label for="Updatetolname" class="form-label">Teacher Last Name to Update</label>
+                            <label for="Updatecolname" class="form-label">Child Last Name to Update</label>
                             <input type="text" id="lnamtoupdate" name="lnamtoupdate" class="form-control" placeholder="lnamtoupdate" required
                             autofocus>
+                            <label for="Newchia" class="form-label">Child Age to Update</label>
+                            <input type="number" id="chage" name="chage" class="form-control" placeholder="chage" required
+                            autofocus>
                             <label for="UpdatetoClrm" class="form-label">Classroom to update</label>
-                            <input type="text" id="clrmtoupdate" name="clrmtoupdate" class="form-control" placeholder="clrmtoupdate" required
+                            <input type="number" id="clrmtoupdate" name="clrmtoupdate" class="form-control" placeholder="clrmtoupdate" required
                             autofocus>
                         </div>
                         <input class="btn btn-lg btn-primary btn-block" type="submit">
                         </form>
 
-                    <!-- Delete a teacher -->
-                    <h1 class="cover-heading">Delete a teacher</h1>
-                    <form action="/d_teacher" method="post">
+                    <!-- Delete a child -->
+                    <h1 class="cover-heading">Delete a child</h1>
+                    <form action="/d_child" method="post">
                         <div class="form-group">
-                            <label for="DelTeaId" class="form-label">Del teacher id</label>
-                            <input type="text" id="teatodel" name="teatodel" class="form-control" placeholder="teatodel" required
+                            <label for="DelChiId" class="form-label">Del child id</label>
+                            <input type="text" id="chitodel" name="chitodel" class="form-control" placeholder="chitodel" required
                             autofocus>
                         </div>
                         <input class="btn btn-lg btn-primary btn-block" type="submit">
@@ -120,7 +130,7 @@
 <script>
     //Set active nav link 
     window.onload = function() {
-        document.getElementById('teacher').classList.add('active');
+        document.getElementById('child').classList.add('active');
       };
 </script>
 </html>
