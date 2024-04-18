@@ -3,14 +3,27 @@
 <body class="text-center">
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
         <%- include('../template/nav')-%>
-
+        <!-- Tab links -->
+        <!-- info on tabs https://www.w3schools.com/howto/howto_js_tabs.asp-->
         <div class="container bg-light text-dark">
-            <!-- All teachers -->
+            <h4 class="cover-heading">Data might not immediately update. If it does not then click the name of the table in the nav bar to update</h1>
+                <div class="tab">
+                    <button class="tablinks" onclick="openTab(event, 'All')">All</button>
+                    <button class="tablinks" onclick="openTab(event, 'Single')">Single</button>
+                    <button class="tablinks" onclick="openTab(event, 'Add')">Add</button>
+                    <button class="tablinks" onclick="openTab(event, 'Update')">Update</button>
+                    <button class="tablinks" onclick="openTab(event, 'Delete')">Delete</button>
+                </div>
+
+
+            <!-- Tab content -->
+            <div id="All" class="tabcontent">
+                <!-- All teachers -->
             <h1 class="cover-heading">All teachers</h1>
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <!-- <th>ID</th> -->
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Room</th>
@@ -19,7 +32,7 @@
                 <tbody>
                     <%locals.teacher.forEach(function(entry) {%>
                     <tr>
-                        <td><%=entry.id%></td>
+                        <!-- <td><%=entry.id%></td> -->
                         <td><%=entry.firstname%></td>
                         <td><%=entry.lastname%></td>
                         <td><%=entry.room%></td>
@@ -27,8 +40,11 @@
                     <%});%>
                 </tbody>
             </table>
-            <!-- Single teacher -->
+            </div>
+            <div id="Single" class="tabcontent">
+                <!-- Single teacher -->
             <h1 class="cover-heading">Choose a teacher</h1>
+            <h4 class="cover-heading">Page will refresh once the ID is selected. Click on the "Single" tab to view once refreshed.</h4>
                     <form action="/s_teacher" method="post">
                         <div class="form-group">
                             <label for="IdtoSearch" class="form-label">ID</label>
@@ -40,7 +56,7 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <!-- <th>ID</th> -->
                                     <th>First Name</th>
                                     <th>Last Name</th>
                                     <th>Room</th>
@@ -48,7 +64,7 @@
                                 <% if (locals.s_teacher && locals.s_teacher.length > 0) { %>
                                     <% locals.s_teacher.forEach(function(s_entry) { %>
                                       <tr>
-                                        <td><%= s_entry.id %></td>
+                                        <!-- <td><%= s_entry.id %></td> -->
                                         <td><%= s_entry.firstname%></td>
                                         <td><%= s_entry.lastname %></td>
                                         <td><%= s_entry.room%></td>
@@ -61,7 +77,9 @@
                                   <% }; %>
                             </tbody>
                         </table>
-                    <!-- Add a teacher -->
+            </div>
+            <div id="Add" class="tabcontent">
+                <!-- Add a teacher -->
                     <h1 class="cover-heading">Add a teacher</h1>
                     <form action="/a_teacher" method="post">
                         <div class="form-group">
@@ -77,8 +95,9 @@
                         </div>
                         <input class="btn btn-lg btn-primary btn-block" type="submit">
                         </form>
-
-                    <!-- Update a teacher -->
+            </div>
+            <div id="Update" class="tabcontent">
+                <!-- Update a teacher -->
                     <h1 class="cover-heading">Update a teacher</h1>
                     <form action="/u_teacher" method="post">
                         <div class="form-group">
@@ -97,8 +116,9 @@
                         </div>
                         <input class="btn btn-lg btn-primary btn-block" type="submit">
                         </form>
-
-                    <!-- Delete a teacher -->
+            </div>
+            <div id="Delete" class="tabcontent">
+                <!-- Delete a teacher -->
                     <h1 class="cover-heading">Delete a teacher</h1>
                     <form action="/d_teacher" method="post">
                         <div class="form-group">
@@ -108,9 +128,7 @@
                         </div>
                         <input class="btn btn-lg btn-primary btn-block" type="submit">
                         </form>
-                        
-
-
+            </div>
 
         </div>
 
@@ -122,5 +140,26 @@
     window.onload = function() {
         document.getElementById('teacher').classList.add('active');
       };
+
+    function openTab(evt, cityName) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
 </script>
 </html>

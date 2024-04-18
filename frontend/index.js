@@ -1,3 +1,6 @@
+//Template from class 11 template
+//Login page from class 9 template
+
 const express = require('express')
 var path = require('path');
 var bodyParser = require('body-parser');
@@ -35,7 +38,7 @@ app.post('/process_login', function(req, res){
     // This sample is showing how to validate user input with static username and password
     // If you want to validate database user data then you need to call REST API for it to get user data
     // Then validate user input with user data retrived from database.
-    if(user === 'admin' && password === 'password')
+    if(user === 'admin' && password === 'CIS3368Project')
     {
         res.render('pages/continue.ejs', {
             user: user,
@@ -376,13 +379,9 @@ axios.get(initial_api)
 // add child
 app.post('/a_child', function (req, res) {
     var message5 = req.body.fnamtoadd;
-    //console.log(message5);
     var message2 = req.body.lnamtoadd;
-    //console.log(message2);
     var message7 = req.body.chage;
-    //console.log(message7);
     var message6 = req.body.clrmtoadd;
-    //console.log(message6);
     var initial_api = 'http://127.0.0.1:5000/api/child'
 
     axios.post(initial_api, {
@@ -451,52 +450,5 @@ app.post('/d_child', function (req, res) {
 });
 
 
-
-
-
-
-
-
-
-
-
-app.get('/list',function (req, res) {
-    //array with items to send
-    var items = ['node.js','expressjs','ejs','javascript','bootstarp'];
-    res.render('pages/list',{
-        list:items
-    })
-});
-
-app.get('/table',function (req, res) {
-    //array with items to send
-    var items = [
-        {name:'node.js',url:'https://nodejs.org/en/'},
-        {name:'ejs',url:'https://ejs.co'},
-        {name:'expressjs',url:'https://expressjs.com'},
-        {name:'vuejs',url:'https://vuejs.org'},
-        {name:'nextjs',url:'https://nextjs.org'}];
-
-    res.render('pages/table',{
-        table:items
-    })
-});
-
-//our alert message midleware
-function messages(req,res,next){
-    var message;
-    res.locals.message = message;
-    next();
-}
-
-app.get('/form',messages,function (req, res) {
-    res.render('pages/form');
-});
-
-app.post('/form',function (req, res) {
-    var message=req.body;
-    res.locals.message = message;
-    res.render('pages/form');
-});
 
 app.listen(port, () => console.log(`MasterEJS app Started on port ${port}!`));

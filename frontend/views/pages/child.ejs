@@ -4,6 +4,7 @@
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
         <%- include('../template/nav')-%>
         <!-- Tab links -->
+        <!-- info on tabs https://www.w3schools.com/howto/howto_js_tabs.asp-->
         <div class="container bg-light text-dark">
             <h4 class="cover-heading">Data might not immediately update. If it does not then click the name of the table in the nav bar to update</h1>
         <div class="tab">
@@ -22,7 +23,7 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <!-- <th>ID</th>  Do not include IDs-->
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Age</th>
@@ -32,7 +33,7 @@
                 <tbody>
                     <%locals.child.forEach(function(entry) {%>
                     <tr>
-                        <td><%=entry.id%></td>
+                        <!-- <td><%=entry.id%></td> -->
                         <td><%=entry.firstname%></td>
                         <td><%=entry.lastname%></td>
                         <td><%=entry.age%></td>
@@ -46,6 +47,7 @@
         <div id="Single" class="tabcontent">
             <!-- Single child -->
             <h1 class="cover-heading">Choose a child</h1>
+                <h4 class="cover-heading">Page will refresh once the ID is selected. Click on the "Single" tab to view once refreshed.</h4>
                     <form action="/s_child" method="post">
                         <div class="form-group">
                             <label for="IdtoSearch" class="form-label">ID</label>
@@ -57,7 +59,7 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <!-- <th>ID</th> -->
                                     <th>First Name</th>
                                     <th>Last Name</th>
                                     <th>Age</th>
@@ -66,7 +68,7 @@
                                 <% if (locals.s_child && locals.s_child.length > 0) { %>
                                     <% locals.s_child.forEach(function(s_entry) { %>
                                       <tr>
-                                        <td><%= s_entry.id %></td>
+                                        <!-- <td><%= s_entry.id %></td> -->
                                         <td><%= s_entry.firstname%></td>
                                         <td><%= s_entry.lastname %></td>
                                         <td><%= s_entry.age %></td>
@@ -148,15 +150,6 @@
 
 
    </div>
-
-
-
-
-
-
-                    
-                        
-
 
 
  </div>

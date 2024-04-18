@@ -3,28 +3,45 @@
 <body class="text-center">
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
         <%- include('../template/nav')-%>
-
+        <!-- info on tabs https://www.w3schools.com/howto/howto_js_tabs.asp-->
+        <!-- Tab links -->
         <div class="container bg-light text-dark">
+            <h4 class="cover-heading">Data might not immediately update. If it does not then click the name of the table in the nav bar to update</h1>
+                <div class="tab">
+                    <button class="tablinks" onclick="openTab(event, 'All')">All</button>
+                    <button class="tablinks" onclick="openTab(event, 'Single')">Single</button>
+                    <button class="tablinks" onclick="openTab(event, 'Add')">Add</button>
+                    <button class="tablinks" onclick="openTab(event, 'Update')">Update</button>
+                    <button class="tablinks" onclick="openTab(event, 'Delete')">Delete</button>
+                </div>
+
+            
+            <!-- Tab Content -->
+            <div id="All" class="tabcontent">
             <!-- All facilities -->
             <h1 class="cover-heading">All Facilities</h1>
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <!-- <th>ID</th> -->
                         <th>Building Name</th>
                     </tr>
                 </thead>
                 <tbody>
                     <%locals.facility.forEach(function(entry) {%>
                     <tr>
-                        <td><%=entry.id%></td>
+                        <!-- <td><%=entry.id%></td> -->
                         <td><%=entry.name%></td>
                     </tr>
                     <%});%>
                 </tbody>
             </table>
+            </div>
+            
             <!-- Single facility -->
-            <h1 class="cover-heading">Choose a facility</h1>
+            <div id="Single" class="tabcontent">
+                <h1 class="cover-heading">Choose a facility</h1>
+                <h4 class="cover-heading">Page will refresh once the ID is selected. Click on the "Single" tab to view once refreshed.</h4>
                     <form action="/s_facility" method="post">
                         <div class="form-group">
                             <label for="IdtoSearch" class="form-label">ID</label>
@@ -36,13 +53,13 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <!-- <th>ID</th> -->
                                     <th>Building Name</th>
                                 </tr>
                                 <% if (locals.s_facility && locals.s_facility.length > 0) { %>
                                     <% locals.s_facility.forEach(function(s_entry) { %>
                                       <tr>
-                                        <td><%= s_entry.id %></td>
+                                        <!-- <td><%= s_entry.id %></td> -->
                                         <td><%= s_entry.name %></td>
                                       </tr>
                                     <% }); %>
@@ -53,18 +70,23 @@
                                   <% }; %>
                             </tbody>
                         </table>
-                    <!-- Add a facility -->
-                    <h1 class="cover-heading">Add a facility</h1>
-                    <form action="/a_facility" method="post">
-                        <div class="form-group">
-                            <label for="NewFacName" class="form-label">New facility name</label>
-                            <input type="text" id="nametoadd" name="nametoadd" class="form-control" placeholder="nametoadd" required
-                            autofocus>
-                        </div>
-                        <input class="btn btn-lg btn-primary btn-block" type="submit">
-                        </form>
+            </div>
 
-                    <!-- Update a facility -->
+            <div id="Add" class="tabcontent">
+                <!-- Add a facility -->
+                <h1 class="cover-heading">Add a facility</h1>
+                <form action="/a_facility" method="post">
+                    <div class="form-group">
+                        <label for="NewFacName" class="form-label">New facility name</label>
+                        <input type="text" id="nametoadd" name="nametoadd" class="form-control" placeholder="nametoadd" required
+                        autofocus>
+                    </div>
+                    <input class="btn btn-lg btn-primary btn-block" type="submit">
+                    </form>
+            </div>
+
+            <div id="Update" class="tabcontent">
+                <!-- Update a facility -->
                     <h1 class="cover-heading">Update a facility</h1>
                     <form action="/u_facility" method="post">
                         <div class="form-group">
@@ -78,7 +100,10 @@
                         <input class="btn btn-lg btn-primary btn-block" type="submit">
                         </form>
 
-                    <!-- Delete a facility -->
+            </div>
+
+            <div id="Delete" class="tabcontent">
+                <!-- Delete a facility -->
                     <h1 class="cover-heading">Delete a facility</h1>
                     <form action="/d_facility" method="post">
                         <div class="form-group">
@@ -88,9 +113,9 @@
                         </div>
                         <input class="btn btn-lg btn-primary btn-block" type="submit">
                         </form>
-                        
 
-
+            </div>
+            
 
         </div>
 
@@ -102,5 +127,26 @@
     window.onload = function() {
         document.getElementById('facility').classList.add('active');
       };
+
+    function openTab(evt, cityName) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
 </script>
 </html>
