@@ -1,1 +1,1 @@
-This is my final project I completed for my CIS 3368 Advanced Information Systems Development class. I worked on this completely by myself and is a project that allows usersto login and view the facilities, classrooms, teachers, and children that are a part of the school.
+This is my final project I completed for my CIS 3368 Advanced Information Systems Development class. I worked on this completely by myself and is a project that allows users to login and view the facilities, classrooms, teachers, and children that are a part of the school.
